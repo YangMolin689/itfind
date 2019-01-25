@@ -1,0 +1,5 @@
+2019-01-24 20:51:44,979  DEBUG  MyLog.py:42  invalid literal for int() with base 10: ''
+2019-01-24 20:51:51,724  DEBUG  MyLog.py:42  invalid literal for int() with base 10: ''
+2019-01-24 20:54:18,595  DEBUG  MyLog.py:42  invalid literal for int() with base 10: ''
+2019-01-24 20:59:41,037  DEBUG  MyLog.py:42  invalid literal for int() with base 10: ''
+2019-01-24 21:01:25,452  DEBUG  MyLog.py:42  invalid literal for int() with base 10: ''

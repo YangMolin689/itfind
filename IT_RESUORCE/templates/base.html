@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>IT资源站</title>
+    <link href="{% static 'image/he.ico' %}" rel="shortcut icon">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    {% block massage %}
+    {%  endblock %}
+</head>
+
+<body>
+	<!--头部分-->
+
+    <div class="header_con">
+		<div class="header">
+			<div class="welcome fl"><a href="{% url 'card:index' %}">IT_FIND 寻找你最想的IT资源!</a></div>
+            <div class="fr">
+            {% if user.is_authenticated %}
+				<div class="login_btn fl">
+					欢迎您：<em>{{ user.name }}</em>
+                    <span>|</span>
+					<a href="{% url 'user:logout' %}">退出</a>
+				</div>
+                {% else %}
+				<div class="login_btn fl">
+					<a href="{% url 'user:login' %}?next={{ request.path }}">登录</a>
+					<span>|</span>
+					<a href="{% url 'user:register' %}">注册</a>
+				</div>
+            {% endif %}
+
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="{% url 'user:user' %}">用户中心</a>
+                <span>|</span>
+                <a href="{% url 'card:show' 1 %}?page=1&sort=default">社区资源中心</a>
+            </div>
+        </div>
+
+		</div>
+	</div>
+
+
+
+{#    展示内容#}
+    {% block body %}
+    {% endblock body %}
+
+
+
+    {% block bottom %}
+    {% endblock bottom %}
+	<div class="footer">
+			<ul>
+                <li>欢迎您加入IT_FIND社区， 资源免费， 让自学不在枯燥......</li>
+				<li>CopyRight©赣ICP19000942号 IT_FIND 2019 如有问题或投稿邮箱联系 yfmolin2@163.com</li>
+				<li>免责声明：网站所有作品均由网友投稿发布，仅供读者预览，下载后请24小时内删除，如果喜欢请购买正版资源!</li>
+			</ul>
+	</div>
+
+
+</body>
+
+
+
+</html>

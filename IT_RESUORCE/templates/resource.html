@@ -1,0 +1,63 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block body %}
+    <div class="my_resource">
+        <div class="res">资源学院</div>
+
+        <div class="res2" >
+
+		     {% for card_type in type_all  %}
+                <span ><a href="{% url 'card:show' card_type.id %}?page=1&sort=new">{{ card_type.name }}</a></span>
+             {% endfor %}
+
+        </div>
+
+
+    </div>
+
+    <div class="my_resource2">
+		<div class="my_sort">
+			<span><a href="{% url 'card:show' type_id  %}?page={{ page }}&sort=new" {% if sort == 'new' %}class="active"{% endif %} >最新</a></span>
+			<span><a href="{% url 'card:show' type_id  %}?page={{ page }}&sort=hot" {% if sort == 'hot' %}class="active"{% endif %}>热门</a></span>
+		</div>
+
+		<div class="my_list">
+
+            {% for cards in  cards_page %}
+
+			<ul>
+				<li><a href="{% url 'card:details' cards.id  %}">{{ cards.name }}</a><span>日期:{{ cards.create_time }}</span></li>
+			</ul>
+
+	        {% endfor %}
+
+		</div>
+
+        <div class="pagenation">
+                {% if cards_page.has_previous %}
+				<a href="{% url 'card:show' type_id  %}?page={{ cards_page.previous_page_number }}&sort={{ sort }} "><上一页</a>
+                {% endif %}
+                {% for pindex in pages %}
+                    {% if pindex == cards_page.number %}
+				        <a href="{% url 'card:show' type_id  %}?page={{ pindex }}&sort={{ sort }} " class="active">{{ pindex }}</a>
+                    {% else %}
+				        <a href="{% url 'card:show' type_id  %}?page={{ pindex }}&sort={{ sort }} ">{{ pindex }}</a>
+                    {% endif %}
+				{% endfor %}
+                {% if cards_page.has_next %}
+				<a href="{% url 'card:show' type_id  %}?page={{ cards_page.next_page_number }}&sort={{ sort }} ">下一页></a>
+                {% endif %}
+			</div>
+
+
+	</div>
+
+{% endblock  %}
+
+
+
+
+
+

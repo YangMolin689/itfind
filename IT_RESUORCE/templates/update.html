@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+
+{% block massage%}
+    {% if errmsg %}
+            <script> alert('{{ errmsg}}') </script>
+    {% endif %}
+{% endblock %}
+
+
+
+{% block body %}
+    <div class="center_con" >
+        <form action="/user/update" method="post">
+        {% csrf_token %}
+        <input  type="text" name="user_name" class="update">
+        请输入你的邮箱
+        <input type="submit">
+        </form>
+    </div>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block massage %}
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+{% endblock %}
+{% block body %}
+    <div class="user_center">
+        <div class="user_show1">
+            <div>用户中心</div>
+            <ul>
+                <li>用户信息</li>
+            </ul>
+        </div>
+        <div class="user_show2">
+            {% if user.image %}
+                <div><img src="{{ user.image.url }}" width="100%" height="100%" class="round_icon" alt=""></div>
+            {% else %}
+                <div><img src="/static/image/head.jpg" width="100%" height="100%" class="round_icon" alt=""></div>
+            {% endif %}
+
+            <ul>
+                <form action="">
+                    {% csrf_token %}
+                    <li><input type="button" value="更改头像" onclick="f.click()" class="btn_mouseout"/><br></li>
+                    <p><input type="file" id="f" name="f" onchange="sc(this);" style="display:none"/></p>
+                    <li>用户名:&nbsp;&nbsp;{{ user.name }}</li>
+                    <li>邮箱:&nbsp;&nbsp;{{ user.email }}</li>
+                    <li>是否超级会员:&nbsp;&nbsp;{{ user.act }}</li>
+                </form>
+            </ul>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block bottom %}
+
+    <script>
+            function sc() {
+                var animateimg = $("#f").val(); //获取上传的图片名 带//
+                var imgarr = animateimg.split('\\'); //分割
+                var myimg = imgarr[imgarr.length - 1]; //去掉 // 获取图片名
+                var houzui = myimg.lastIndexOf('.'); //获取 . 出现的位置
+                var ext = myimg.substring(houzui, myimg.length).toUpperCase();  //切割 . 获取文件后缀
+
+                var file = $('#f').get(0).files[0]; //获取上传的文件
+                var fileSize = file.size;           //获取上传的文件大小
+                var maxSize = 1048576;              //最大1MB
+
+                if (ext != '.PNG' && ext != '.GIF' && ext != '.JPG' && ext != '.JPEG' && ext != '.BMP') {
+                    alert('文件类型错误,请上传图片类型');
+                    return false;
+                } else if (parseInt(fileSize) >= parseInt(maxSize)) {
+                    alert('上传的文件不能超过1MB');
+                    return false;
+                } else {
+
+                    var formData = new FormData();
+                    act = $("#f")[0].files[0];
+
+                    console.log(act);
+
+                    csrf = $('input[name="csrfmiddlewaretoken"]').val();
+
+                    formData.append("csrfmiddlewaretoken", csrf);
+                    formData.append('act', act);
+
+                    $.ajax({
+                        url: '/user/',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.msg == "1") {
+                                alert("设置成功")
+                                window.location.reload()
+                            } else {
+                                alert("设置失败")
+                            }
+
+                        }
+                    });
+
+
+                }
+            }
+    </script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

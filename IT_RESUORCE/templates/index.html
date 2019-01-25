@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block massage %}
+	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/slide.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="center_con clearfix">
+        <ul class="subnav fl">
+            {% for type in type_all %}
+                <li><a href="{% url 'card:show'  type.id %}?page=1&sort=new" class="much">{{ type.name }}></a></li>
+            {% endfor %}
+
+            <li><a href="{% url 'card:show' 1 %}?page=1&sort=new" class="much">更多资源></a></li>
+        </ul>
+
+        <div class="slide fl">
+            <ul class="slide_pics">
+                <li><img src="{% static 'image/slide.jpg' %}" alt="幻灯片"></li>
+                <li><img src="{% static 'image/slide2.jpg' %}" alt="幻灯片"></li>
+                <li><img src="{% static 'image/slide3.jpg' %}" alt="幻灯片"></li>
+            </ul>
+            <div class="prev"></div>
+            <div class="next"></div>
+            <ul class="points"></ul>
+        </div>
+
+        <div class="adv fl">
+            <a href="#"><img src="{% static 'image/timg3.jpg' %}"></a>
+        </div>
+    </div>
+
+    <!--内容展示-->
+    <div class="my_con">
+
+        <!--最新资源-->
+        <div class="new fl">
+            <h3>最新资源</h3>
+            <ul>
+                {% for card in cards %}
+                    <li><a href="{% url 'card:details' card.id %}">{{ card.name }}</a></li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        <!--资源-->
+        <div class=" new2 fl">
+            <h3>精品资源</h3>
+            <ul>
+                {% for hot in hots %}
+
+                    <li><a href="{% url 'card:details' hot.id %}">{{ hot.name }}</a></li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        <!--推荐资源-->
+        <div class=" new3 fl">
+            <div><span></span>&nbsp;&nbsp;推荐资源</div>
+            <ul>
+                {% for card in fives %}
+                <li><a href="{% url 'card:details' card.id %}">{{ card.name }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <div class="my_con2">
+        <!--区块链-->
+        <div class="news">
+            <h3>区块链新闻</h3>
+            <ul>
+               {% for head,content in blk.items %}
+                <li><a href="{{ content }}">{{ head }}</a></li>
+               {% endfor %}
+            </ul>
+        </div>
+
+        <!--人工智能-->
+        <div class="news2">
+            <h3>人工智能新闻</h3>
+            <ul>
+              {% for head,content in smart.items %}
+                <li><a href="{{ content }}">{{ head }}</a></li>
+              {% endfor %}
+            </ul>
+        </div>
+
+        <!--推荐电子书-->
+        <div class=" news3">
+            <div><span></span>&nbsp;&nbsp;推荐电子书</div>
+            <ul>
+                {% for book in books %}
+                <li><a href="{% url 'card:details' book.id %}">{{ book.name }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        <!--社区公告-->
+        <div class="news4">
+            <ul>
+                <li>&nbsp;&nbsp;&nbsp;统计人数:  {{ peopels }}人</li>
+                <li>&nbsp;&nbsp;&nbsp;统计帖子:  {{ count }}帖</li>
+                <li>&nbsp;<a href="//shang.qq.com/wpa/qunwpa?idkey=b2780416120b077f2baf1673b179c51bcb8da955a3c50aa4baf70c81b97e6ef5">&nbsp;&nbsp;&nbsp;加入我们</a></li>
+            </ul>
+        </div>
+
+    </div>
+{% endblock  %}
+
+
+
+
+

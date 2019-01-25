@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block massage %}
+	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js'%}"></script>
+
+    {% if errmsg %}
+            <script> alert('{{ errmsg}}') </script>
+     {% endif %}
+{% endblock %}
+
+
+
+
+{% block body %}
+<div class="my_register">
+        <img src="{% static 'image/register.jpg' %}" alt="" height="580px" width="1200px">
+
+        <div class="reg_form clearfix">
+				<form method="post" action="/user/register">
+                {% csrf_token %}
+				<ul>
+					<li>
+						<label>用户名:</label>
+						<input type="text" name="user_name" id="user_name">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>密码:</label>
+						<input type="password" name="pwd" id="pwd">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>确认密码:</label>
+						<input type="password" name="cpwd" id="cpwd">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>邮箱:</label>
+						<input type="text" name="email" id="name">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li class="agreement">
+						<input type="checkbox" name="allow" id="allow" checked="checked">
+						<label>同意IT FIND 协议</label>
+						<span class="error_tip2">提示信息</span>
+					</li>
+					<li class="reg_sub">
+						<input type="submit" value="注 册" name="">
+					</li>
+				</ul>
+				</form>
+			</div>
+    </div>
+{% endblock %}
+
+
+
+

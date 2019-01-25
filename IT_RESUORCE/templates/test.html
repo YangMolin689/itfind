@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/user/update_user_act" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <img src="{{ user.image.url }}" alt="">
+    <input type="file" name="act">
+<button type="submit">点击更换头像</button>
+    
+</form>
+
+</body>
+</html>
+

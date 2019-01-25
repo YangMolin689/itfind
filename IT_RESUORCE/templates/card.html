@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+{% block massage %}
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+    <div class="my_card">
+        <div class="my_first_card">
+              {% if card.user.image %}
+                  <img src="{{  card.user.image.url }}" alt="" class="comment_photo clearfix">
+              {% else %}
+                  <img src="{% static "image/head.jpg" %}" alt="" class="comment_photo clearfix">
+              {% endif %}
+            <div id="author" val="{{ card.is_login }}">作者:&nbsp;&nbsp;{{ card.user.name }}</div>
+
+        </div>
+        <div class="my_second_card">
+            <span><a
+                    href="{% url 'card:show' card.type.id %}?page=1&sort=new">{{ card.type }}</a>:&nbsp&nbsp&nbsp{{ card.name }}</span>
+            <img src="../static/image/book.jpg" alt="" width="200px" height="200px">
+            <div>
+                <ul class="clearfix">
+                    <li>上传时间:{{ card.create_time }}</li>
+                    <li>下载方式:{{ card.way }}</li>
+                    <li>是否全套:{{ card.is_all }}</li>
+                    <li>是否需要会员:{{ card.is_merber }}</li>
+                    <li>资源大小:{{ card.size }}</li>
+                    <li>资源类型:{{ card.type }}</li>
+                </ul>
+                <h2><a href="//shang.qq.com/wpa/qunwpa?idkey=b2780416120b077f2baf1673b179c51bcb8da955a3c50aa4baf70c81b97e6ef5">点击加入交流QQ群</a></h2>
+            </div>
+            <p class="base clearfix">该资源对所有注册用户免费开放，下载链接在帖子底部</p>
+        </div>
+
+        <div class="card_show" val="{{ card.no_login }}">
+            {% autoescape off %}
+
+
+
+
+            {% endautoescape %}
+        </div>
+
+        <div class="card_comment" val="{{ card.id }}">
+            <div id="reply">Molin，如果您要查看本帖隐藏内容请 <input type="submit" value="回复"></div>
+            <h2 id="res"></h2>
+        </div>
+
+        <div class="show_comment" val="{{ card.is_msg }}">
+            {% csrf_token %}
+            <h2>共收到 {{ card.count_comment }} 条回复&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;只显示最新的8条</h2>
+            <div class="my_comment">
+                {% for cmt in card.comt %}
+                    <ul>
+                        {% if cmt.user.image %}
+                            <img src="{{  cmt.user.image.url }}" alt="" class="comment_photo clearfix">
+                        {% else %}
+                            <img src="{% static "image/head.jpg" %}" alt="" class="comment_photo clearfix">
+
+                        {% endif %}
+                        <span>{{ cmt.user.name }} &nbsp; &nbsp;{{ cmt.create_time }}</span>
+                        <div class="comment_content clearfix">
+                            {{ cmt.name }}
+                        </div>
+                    </ul>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock body %}
+
+{% block bottom %}
+    <script>
+
+
+        $(document).ready(function () {
+            var user_login = $('#author').attr("val");
+            if (user_login != "login") {
+                var user_msg = $('.show_comment').attr("val");
+                if (user_msg == "2") {
+
+                    var user_id = $('.card_show').attr("val");
+                    var card_id = $('.card_comment').attr("val");
+
+                    $("#reply").css('display', 'none');
+                    params = {"user_id": user_id, "card_id": card_id};
+                    $.get('/show_card', params, function (data) {
+                        if (data.msg == "1") {
+                            $(".card_show").html(data.masg)
+
+                        } else {
+                            alert(data.masg)
+                        }
+
+                    })
+                }
+
+            }
+
+
+            $("#reply").click(function () {
+
+                var user_login = $('#author').attr("val");
+                if (user_login == "login") {
+                    alert("请先登入")
+                    window.location.href = '/user/login' + "?next={{ request.path }}";
+                } else {
+
+                    var x = prompt("请输入回复内容:");
+                    if (typeof x == "undefined" || x == null || x == "") {
+                        alert("内容不能为空")
+
+                    } else if(x.length < 5) {
+
+                        alert("内容不少于5个字符")
+
+                    }else{
+
+                        var user_id = $('.card_show').attr("val");
+                        csrf = $('input[name="csrfmiddlewaretoken"]').val();
+                        var id = $('.card_comment').attr("val");
+
+                        var urls = "/details/" + id;
+
+
+                        //组织参数
+                        params = {"card_id": id, "user_id": user_id, "csrfmiddlewaretoken": csrf, "comment": x};
+
+                        $.post(urls, params, function (data) {
+
+
+                            if (data.msg == '1') {
+                                location.reload();
+                            } else {
+                                alert(data.masg)
+
+                            }
+                        });
+
+
+                    }
+                }
+
+            });
+
+
+        });
+
+
+    </script>
+
+{% endblock bottom %}
+

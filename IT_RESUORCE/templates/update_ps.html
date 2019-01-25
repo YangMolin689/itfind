@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block massage %}
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/up_ps.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js'%}"></script>
+
+{% endblock %}
+
+
+{% block body %}
+
+        <div class="my_con">
+           {% csrf_token %}
+        <p class="u_ps"  id="psw">
+        重置密码<input type="password" name="pwd" id="pwd"><span></span>
+        </p>
+        <p class="u_ps">
+        再次输入<input type="password" name="cpwd" id="cpwd"><span></span>
+        </p>
+        <input class="us" type="submit" id="ps"  value="修改">
+        </div>
+
+{% endblock %}
+
+{% block bottom %}
+    <script>
+     $(document).ready(function(){
+         var id = '{{ token }}';
+
+
+
+        $('#ps').click(function () {
+            var pwd = $('#pwd').val();
+            var cpwd = $('#cpwd').val();
+            csrf = $('input[name="csrfmiddlewaretoken"]').val();
+            url = '/user/update_ps/'+id;
+            params ={"csrfmiddlewaretoken":csrf,'pwd':pwd, 'cpwd':cpwd};
+            $.post(url, params,function(data){
+                if(data.status == '1'){
+                    alert(data.msg);
+                    window.location.href = "http://127.0.0.1:8000/user/login";
+                }else{
+
+                    alert(data.msg)
+                }
+
+            },'json')
+
+
+        });
+
+
+     })
+
+
+
+
+    </script>
+{% endblock  %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
